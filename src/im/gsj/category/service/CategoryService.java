@@ -101,7 +101,7 @@ public class CategoryService {
 		model.addAttribute("imageDtoList", imageDtoList);
 		model.addAttribute("pageSize", dtoPage.getPageSize());
 		//取出头部和尾部的值
-		model = indexService.getHeadAndFooter(shopId, model);
+		model = indexService.getHeadAndFooterM(shopId, model);
 		return model;
 	}
 	

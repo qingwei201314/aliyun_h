@@ -19,6 +19,7 @@ import im.gsj.util.Constant;
 import im.gsj.util.PageHbase;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -45,82 +46,140 @@ public class IndexService {
 	private ImageDao imageDao;
 	@Resource
 	private UserDao userDao;
-	
-	public ModelMap home(String phone, String startRow, boolean pre, ModelMap model) throws IOException{
+
+	// 未登录商店首页
+	public ModelMap home(String phone, String startRow, boolean pre, ModelMap model) throws IOException {
 		Shop shop = shopDao.getByPhone(phone);
 		User user = userDao.get(shop.getUserId());
 		model.addAttribute("shop", shop);
 		model.addAttribute("userPhone", user.getPhone());
-		//取出省市区
+		// 取出省市区
 		Integer cityId = shop.getDistrict();
 		String provinceTownCity = cityService.getByShopDistrict(cityId);
 		model.addAttribute("provinceTownCity", provinceTownCity);
 		List<Category> categoryList = categoryDao.getByShop(shop.getId());
 		model.addAttribute("categoryList", categoryList);
 		PageHbase<Product> originalPage = productDao.getNewProductHbase(shop.getId(), startRow, pre);
-		PageHbase<ProductVo> page  =  getFirstProductImage(originalPage);
+		PageHbase<ProductVo> page = getFirstProductImage(originalPage);
 		model.addAttribute("page", page);
-		
-		//如果有地图信息，则显示地图
+
+		// 如果有地图信息，则显示地图
 		Map map = mapDao.query("shopId", shop.getId());
 		model.addAttribute("map", map);
 		return model;
 	}
-	
+
+	// 未登录商店首页(手机版)
+	public ModelMap homeM(String phone, String startRow, boolean pre, ModelMap model) throws IOException {
+		Shop shop = shopDao.getByPhone(phone);
+		User user = userDao.get(shop.getUserId());
+		model.addAttribute("shop", shop);
+		model.addAttribute("userPhone", user.getPhone());
+		// 取出省市区
+		Integer cityId = shop.getDistrict();
+		String provinceTownCity = cityService.getByShopDistrict(cityId);
+		model.addAttribute("provinceTownCity", provinceTownCity);
+		// 头部显示的菜单
+		List<Category> categoryList = categoryDao.getByShop(shop.getId());
+		// 导航栏只显示三个菜单
+		if (categoryList.size() > 3) {
+			List<Category> categoryListFront = categoryList.subList(0, 3);
+			model.addAttribute("categoryList", categoryListFront);
+			List<Category> categoryListHide = categoryList.subList(3, categoryList.size());
+			model.addAttribute("categoryListHide", categoryListHide);
+		} else {
+			model.addAttribute("categoryList", categoryList);
+		}
+
+		PageHbase<Product> originalPage = productDao.getNewProductHbase(shop.getId(), startRow, pre);
+		PageHbase<ProductVo> page = getFirstProductImage(originalPage);
+		model.addAttribute("page", page);
+
+		// 如果有地图信息，则显示地图
+		Map map = mapDao.query("shopId", shop.getId());
+		model.addAttribute("map", map);
+		return model;
+	}
+
 	/**
 	 * 取得每个产品的第一张图片
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
-	public PageHbase<ProductVo> getFirstProductImage(PageHbase<Product> page) throws IOException{
+	public PageHbase<ProductVo> getFirstProductImage(PageHbase<Product> page) throws IOException {
 		PageHbase<ProductVo> newPage = new PageHbase<ProductVo>();
 		List<ProductVo> productVoList = newPage.getList();
 		List<Product> productList = page.getList();
-		for(Product product: productList){
-			ProductVo productVo =new ProductVo();
+		for (Product product : productList) {
+			ProductVo productVo = new ProductVo();
 			BeanUtils.copyProperties(product, productVo);
-			//第一张图片
-			Image image =imageDao.getFirstImage(product.getId());
-			if( image != null ){
-				productVo.setPath(image.getPath()+ Constant.S);
+			// 第一张图片
+			Image image = imageDao.getFirstImage(product.getId());
+			if (image != null) {
+				productVo.setPath(image.getPath() + Constant.S);
 				productVo.setPostfix(image.getPostfix());
 			}
 			productVoList.add(productVo);
 		}
 		return newPage;
 	}
-	
+
 	/**
 	 * 取得每个产品的第一张图片(from Hbase)
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
-	public PageHbase<ProductVo> getFirstProductImageHbase(PageHbase<Product> page) throws IOException{
-		PageHbase<ProductVo> newPage = new PageHbase<ProductVo>(page.getHasPre(),page.getHasNext());
+	public PageHbase<ProductVo> getFirstProductImageHbase(PageHbase<Product> page) throws IOException {
+		PageHbase<ProductVo> newPage = new PageHbase<ProductVo>(page.getHasPre(), page.getHasNext());
 		List<ProductVo> productVoList = newPage.getList();
 		List<Product> productList = page.getList();
-		for(Product product: productList){
-			ProductVo productVo =new ProductVo();
+		for (Product product : productList) {
+			ProductVo productVo = new ProductVo();
 			BeanUtils.copyProperties(product, productVo);
-			//取出产品的第一张图片。
+			// 取出产品的第一张图片。
 			Image image = imageDao.getFirstImage(product.getId());
-			if( image != null ){
-				productVo.setPath(image.getPath()+ Constant.S);
+			if (image != null) {
+				productVo.setPath(image.getPath() + Constant.S);
 				productVo.setPostfix(image.getPostfix());
 			}
 			productVoList.add(productVo);
 		}
 		return newPage;
 	}
-	
+
 	/**
 	 * 取出头部和尾部
 	 */
-	public ModelMap getHeadAndFooter(String shopId, ModelMap model) throws IOException{
+	public ModelMap getHeadAndFooter(String shopId, ModelMap model) throws IOException {
 		Shop shop = shopDao.get(shopId);
 		User user = userDao.get(shop.getUserId());
 		model.addAttribute("shop", shop);
 		model.addAttribute("userPhone", user.getPhone());
 		List<Category> categoryList = categoryDao.getByShop(shop.getId());
 		model.addAttribute("categoryList", categoryList);
+		return model;
+	}
+	
+	/**
+	 * 取出头部和尾部(手机版)
+	 */
+	public ModelMap getHeadAndFooterM(String shopId, ModelMap model) throws IOException {
+		Shop shop = shopDao.get(shopId);
+		User user = userDao.get(shop.getUserId());
+		model.addAttribute("shop", shop);
+		model.addAttribute("userPhone", user.getPhone());
+		List<Category> categoryList = categoryDao.getByShop(shop.getId());
+		
+		// 导航栏只显示三个菜单
+		if (categoryList.size() > 3) {
+			List<Category> categoryListFront = categoryList.subList(0, 3);
+			model.addAttribute("categoryList", categoryListFront);
+			List<Category> categoryListHide = categoryList.subList(3, categoryList.size());
+			model.addAttribute("categoryListHide", categoryListHide);
+		} else {
+			model.addAttribute("categoryList", categoryList);
+		}
+		
 		return model;
 	}
 }

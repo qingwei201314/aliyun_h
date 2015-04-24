@@ -176,6 +176,20 @@ public class ProductService {
 	}
 	
 	/**
+	 * 取出产品的详细(手机版)
+	 */
+	public ModelMap viewProductM(String productId, String startRow, boolean pre, ModelMap model) throws IllegalAccessException, InvocationTargetException, IOException{
+		ProductVo productVo = viewProductWithImage(productId, startRow, pre);
+		model.addAttribute("productVo", productVo);
+		model.addAttribute("categoryId", productVo.getCategoryId()); //类别id,用于在头部的高亮
+		
+		//取出头部和尾部的参数
+		model = indexService.getHeadAndFooterM(productVo.getShopId(), model);
+		
+		return model;
+	}
+	
+	/**
 	 * 取得产品信息以及图片信息
 	 */
 	public ProductVo viewProductWithImage(String productId, String startRow, boolean pre) throws IllegalAccessException,

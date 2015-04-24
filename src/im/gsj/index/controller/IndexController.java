@@ -4,9 +4,13 @@ import im.gsj.index.service.IndexService;
 import im.gsj.product.service.ProductService;
 import im.gsj.util.PageHbase;
 import im.gsj.util.Util;
+
 import java.io.IOException;
 import java.util.Calendar;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +26,16 @@ public class IndexController {
 	private ProductService productService;
 
 	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
-	public String index() {
-		return "/index";
+	public String index(HttpServletRequest request) {
+		String header = request.getHeader("user-agent");
+		
+		if(header.indexOf("Mobile") > 0){
+			//如果是手机浏览器
+			return "/mobile/index";
+		}else{
+			//如果是pc浏览器
+			return "/index";
+		}
 	}
 
 	// 跳转到主页

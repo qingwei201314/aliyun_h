@@ -27,7 +27,7 @@ public class ImportUtil {
 
 	public static Configuration getConfig() {
 		Configuration config = HBaseConfiguration.create();
-		config.set("hbase.zookeeper.quorum", "115.28.139.46");
+		config.set("hbase.zookeeper.quorum", "192.168.236.128");
 		return config;
 	}
 	

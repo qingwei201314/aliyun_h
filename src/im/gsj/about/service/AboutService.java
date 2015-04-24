@@ -55,4 +55,15 @@ public class AboutService {
 		model = indexService.getHeadAndFooter(shop.getId(), model);
 		return model;
 	}
+	
+	/**
+	 * 查出跳转到《关于我们》所需要的参数(手机版)
+	 */
+	public ModelMap aboutUsM(String phone, ModelMap model) throws IOException{
+		Shop shop = shopDao.getByPhone(phone);
+		About about = aboutDao.query("shop_id", shop.getId());
+		model.addAttribute("about", about);
+		model = indexService.getHeadAndFooterM(shop.getId(), model);
+		return model;
+	}
 }

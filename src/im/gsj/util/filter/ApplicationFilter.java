@@ -18,7 +18,16 @@ public class ApplicationFilter extends CharacterEncodingFilter{
 		String servletPath = request.getServletPath();
 		if(servletPath !=null &&servletPath.matches("^/\\d{11,20}$")){
 			servletPath = servletPath.substring(1, servletPath.length());
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/index/home.do?phone="+servletPath + "&pageNo=1");
+			RequestDispatcher dispatcher = null;
+			if(request.getHeader("user-agent").indexOf("Mobile") > 0){
+				//跳转到手机网页
+				dispatcher = request.getRequestDispatcher("/indexM/home.do?phone="+servletPath + "&pageNo=1");
+			}
+			else{
+				//跳转到pc网页
+				dispatcher = request.getRequestDispatcher("/index/home.do?phone="+servletPath + "&pageNo=1");
+			}
+			
 			dispatcher.forward(request, response);
 		}
 		else{
