@@ -9,8 +9,9 @@
 </head>
 <body>
 <div style="width: 100%;">
+	<!-- 
     <a href="${util.path }/userM/login.do" class="login_register">登录</a>
-    <a href="${util.path }/indexM/register.do" class="login_register float_right">注册</a>
+    <a href="${util.path }/indexM/register.do" class="login_register float_right">注册</a> -->
 </div>
 <form id="searchForm" action="${util.path }/index/search.do" method="get">
     <div class="logo_div">
@@ -23,7 +24,7 @@
         </div>
     </div>
     <div style="text-align: center;margin-top: 40%;font-size: 0.5em;color: #777777">
-        大数据企业黄页：你的电话号码就是您的企业网站！
+        大数据企业网站：你的电话号码就是您的企业网站！
     </div>
 </form>
 

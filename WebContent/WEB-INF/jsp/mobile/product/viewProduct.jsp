@@ -42,7 +42,7 @@
 		//点击图片时，弹出图片查看窗口
 		function showImage(imageSrc,productName) {
 			$("body").addClass("backgroud_gray");
-			var viewImagePath = "${util.path}/product/viewImage.do?imageSrc=" + imageSrc + "&productName=" + productName;
+			var viewImagePath = "${util.path}/productM/viewImage.do?imageSrc=" + imageSrc + "&productName=" + productName;
 			window.open(viewImagePath, "", "width:100%;height:100%;status:no;");
 			$("body").removeClass("backgroud_gray");
 		}

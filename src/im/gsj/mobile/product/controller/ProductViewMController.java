@@ -30,6 +30,16 @@ public class ProductViewMController {
 	}
 	
 	/**
+	 * 查看某一张图片
+	 */
+	@RequestMapping(value="viewImage.do", method=RequestMethod.GET)
+	public String viewImage(@RequestParam("imageSrc") String imageSrc, @RequestParam("productName") String productName, ModelMap model){
+		model.addAttribute("imageSrc", imageSrc);
+		model.addAttribute("productName", productName);
+		return "/mobile/product/viewImage";
+	}
+	
+	/**
 	 * 加载某一产品的更多图片(手机版)
 	 */
 	@RequestMapping(value="moreImage.do", method = RequestMethod.GET)

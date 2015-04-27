@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	<div style="text-align: center;margin-top: 100px;font-size: 8pt;color: #777777">
-		大数据企业黄页：你的电话号码就是您的企业网站！
+		大数据企业网站：你的电话号码就是您的企业网站！
 	</div>
 </form>
 
