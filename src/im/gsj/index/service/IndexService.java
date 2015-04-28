@@ -146,6 +146,30 @@ public class IndexService {
 		}
 		return newPage;
 	}
+	
+	/**
+	 * 取得每个产品的第一张图片(from Hbase , 手机网页)
+	 */
+	public PageHbase<ProductVo> getFirstProductImageHbaseM(PageHbase<Product> page) throws IOException {
+		PageHbase<ProductVo> newPage = new PageHbase<ProductVo>(page.getHasPre(), page.getHasNext());
+		List<ProductVo> productVoList = newPage.getList();
+		List<Product> productList = page.getList();
+		for (Product product : productList) {
+			ProductVo productVo = new ProductVo();
+			BeanUtils.copyProperties(product, productVo);
+			//手机页面显示字数控制：7字数
+			if(productVo.getName().length() >7 )
+				productVo.setName(productVo.getName().substring(0, 6) + "...");
+			// 取出产品的第一张图片。
+			Image image = imageDao.getFirstImage(product.getId());
+			if (image != null) {
+				productVo.setPath(image.getPath() + Constant.S);
+				productVo.setPostfix(image.getPostfix());
+			}
+			productVoList.add(productVo);
+		}
+		return newPage;
+	}
 
 	/**
 	 * 取出头部和尾部

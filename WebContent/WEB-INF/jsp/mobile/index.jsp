@@ -13,7 +13,7 @@
     <a href="${util.path }/userM/login.do" class="login_register">登录</a>
     <a href="${util.path }/indexM/register.do" class="login_register float_right">注册</a> -->
 </div>
-<form id="searchForm" action="${util.path }/index/search.do" method="get">
+<form id="searchForm" action="${util.path }/indexM/search.do" method="get">
     <div class="logo_div">
         <a href="${util.path}/indexM/main.do"><img src="${util.path}/img/logo.png" style="border:0;width: 80%"/></a>
     </div>

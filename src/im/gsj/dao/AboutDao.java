@@ -112,8 +112,8 @@ public class AboutDao {
 	 * 在现有put的基础上设置product的各属性值
 	 */
 	private Put setPut(Put p, About about) {
-		p.add(Bytes.toBytes("a"), Bytes.toBytes("shopId"), Bytes.toBytes(about.getShopId()));
-		p.add(Bytes.toBytes("a"), Bytes.toBytes("content"), Bytes.toBytes(about.getContent()));
+		p.addColumn(Bytes.toBytes("a"), Bytes.toBytes("shopId"), Bytes.toBytes(about.getShopId()));
+		p.addColumn(Bytes.toBytes("a"), Bytes.toBytes("content"), Bytes.toBytes(about.getContent()));
 		return p;
 	}
 	

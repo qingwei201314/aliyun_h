@@ -18,8 +18,6 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
-import org.apache.hadoop.hbase.filter.FilterList;
-import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.stereotype.Service;
@@ -148,17 +146,17 @@ public class ShopDao {
 	 * 在现有put的基础上设置shop的各属性值
 	 */
 	private Put setPut(Put p, Shop shop) {
-		p.add(Bytes.toBytes("s"), Bytes.toBytes("userId"), Bytes.toBytes(shop.getUserId()));
-		p.add(Bytes.toBytes("s"), Bytes.toBytes("name"), Bytes.toBytes(shop.getName()));
-		p.add(Bytes.toBytes("s"), Bytes.toBytes("shortName"), Bytes.toBytes(shop.getShortName()));
-		p.add(Bytes.toBytes("s"), Bytes.toBytes("contact"), Bytes.toBytes(shop.getContact()));
-		p.add(Bytes.toBytes("s"), Bytes.toBytes("address"), Bytes.toBytes(shop.getAddress()));
-		p.add(Bytes.toBytes("s"), Bytes.toBytes("district"), Bytes.toBytes(shop.getDistrict()));
+		p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("userId"), Bytes.toBytes(shop.getUserId()));
+		p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("name"), Bytes.toBytes(shop.getName()));
+		p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("shortName"), Bytes.toBytes(shop.getShortName()));
+		p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("contact"), Bytes.toBytes(shop.getContact()));
+		p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("address"), Bytes.toBytes(shop.getAddress()));
+		p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("district"), Bytes.toBytes(shop.getDistrict()));
 		if(shop.getGateUrl() != null){
-			p.add(Bytes.toBytes("s"), Bytes.toBytes("gateUrl"), Bytes.toBytes(shop.getGateUrl()));
+			p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("gateUrl"), Bytes.toBytes(shop.getGateUrl()));
 		}
 		if(shop.getDescript() != null){
-			p.add(Bytes.toBytes("s"), Bytes.toBytes("descript"), Bytes.toBytes(shop.getDescript()));
+			p.addColumn(Bytes.toBytes("s"), Bytes.toBytes("descript"), Bytes.toBytes(shop.getDescript()));
 		}
 		return p;
 	}

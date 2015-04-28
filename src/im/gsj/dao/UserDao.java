@@ -16,8 +16,6 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
-import org.apache.hadoop.hbase.filter.FilterList;
-import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.stereotype.Service;
@@ -116,8 +114,8 @@ public class UserDao {
 	 * 在现有put的基础上设置User的各属性值 
 	 */
 	private Put setPut(Put p, User user){
-		p.add(Bytes.toBytes("u"), Bytes.toBytes("phone"), Bytes.toBytes(user.getPhone()));
-		p.add(Bytes.toBytes("u"), Bytes.toBytes("password"), Bytes.toBytes(user.getPassword()));
+		p.addColumn(Bytes.toBytes("u"), Bytes.toBytes("phone"), Bytes.toBytes(user.getPhone()));
+		p.addColumn(Bytes.toBytes("u"), Bytes.toBytes("password"), Bytes.toBytes(user.getPassword()));
 		return p;
 	}
 	

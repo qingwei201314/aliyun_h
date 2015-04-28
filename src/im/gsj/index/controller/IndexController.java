@@ -60,7 +60,7 @@ public class IndexController {
 		if (q != null && q.matches("^(0|1)\\d{10,19}$")) {
 			viewResult = "redirect:" + Util.path() + "/" + q;
 		} else {
-			PageHbase<im.gsj.index.vo.ProductVo> page = productService.indexSearch(q, startRow, pre);
+			PageHbase<im.gsj.index.vo.ProductVo> page = productService.indexSearch(q, startRow, pre, null);
 			model.addAttribute("page", page);
 			model.addAttribute("q", q);
 		}

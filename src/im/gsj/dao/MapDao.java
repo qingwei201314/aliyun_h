@@ -128,9 +128,9 @@ public class MapDao {
 	 * 在现有put的基础上设置map的各属性值
 	 */
 	private Put setPut(Put p, Map map) {
-		p.add(Bytes.toBytes("m"), Bytes.toBytes("shopId"), Bytes.toBytes(map.getShopId()));
-		p.add(Bytes.toBytes("m"), Bytes.toBytes("longitude"), Bytes.toBytes(map.getLongitude()));
-		p.add(Bytes.toBytes("m"), Bytes.toBytes("latitude"), Bytes.toBytes(map.getLatitude()));
+		p.addColumn(Bytes.toBytes("m"), Bytes.toBytes("shopId"), Bytes.toBytes(map.getShopId()));
+		p.addColumn(Bytes.toBytes("m"), Bytes.toBytes("longitude"), Bytes.toBytes(map.getLongitude()));
+		p.addColumn(Bytes.toBytes("m"), Bytes.toBytes("latitude"), Bytes.toBytes(map.getLatitude()));
 		return p;
 	}
 }

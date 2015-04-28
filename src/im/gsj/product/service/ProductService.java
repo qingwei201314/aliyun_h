@@ -233,9 +233,19 @@ public class ProductService {
 	 * 根据关键字查出一页产品记录
 	 * @throws IOException 
 	 */
-	public PageHbase<im.gsj.index.vo.ProductVo> indexSearch(String q, String startRow, boolean pre) throws IOException{
-		PageHbase<Product> originalPage = productDao.searchProductHbase(q, startRow, pre);
+	public PageHbase<im.gsj.index.vo.ProductVo> indexSearch(String q, String startRow, boolean pre, Integer pageSize) throws IOException{
+		PageHbase<Product> originalPage = productDao.searchProductHbase(q, startRow, pre, pageSize);
 		PageHbase<im.gsj.index.vo.ProductVo> page  =  indexService.getFirstProductImageHbase(originalPage);
+		return page;
+	}
+	
+	/**
+	 * 根据关键字查出一页产品记录
+	 * @throws IOException 
+	 */
+	public PageHbase<im.gsj.index.vo.ProductVo> indexSearchM(String q, String startRow, boolean pre, Integer pageSize) throws IOException{
+		PageHbase<Product> originalPage = productDao.searchProductHbase(q, startRow, pre, pageSize);
+		PageHbase<im.gsj.index.vo.ProductVo> page  =  indexService.getFirstProductImageHbaseM(originalPage);
 		return page;
 	}
 }

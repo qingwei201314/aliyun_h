@@ -23,6 +23,7 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.FilterList;
+import org.apache.hadoop.hbase.filter.NullComparator;
 import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.filter.RegexStringComparator;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
@@ -189,21 +190,30 @@ public class ProductDao {
 	/**
 	 * 根据关键字查询某一商店的产品(hbase)
 	 */
-	public PageHbase<Product> searchProductHbase(String q, String startRow, boolean pre) throws IOException {
+	public PageHbase<Product> searchProductHbase(String q, String startRow, boolean pre, Integer pageSize) throws IOException {
 		PageHbase<Product> pageHbase = new PageHbase<Product>();
+		//手机版网页需要一页显示多条记录
+		if(pageSize!=null){
+			pageHbase.setPageSize(pageSize);
+		}
 		Connection connection = ConnectionFactory.createConnection(HbaseConfig.getConfig());
 		try {
 			Table table = connection.getTable(TableName.valueOf("Product"));
 			try {
 				Scan scan = new Scan();
 				scan.addFamily(Bytes.toBytes("p"));
-				// name 或 description 中有包含q内容的记录
 				FilterList filterList = new FilterList(FilterList.Operator.MUST_PASS_ONE);
+				
+				//名字中包含查询内容
 				SingleColumnValueFilter nameFilter = new SingleColumnValueFilter(Bytes.toBytes("p"), Bytes.toBytes("name"), CompareOp.EQUAL,
 						new SubstringComparator(q));
 				filterList.addFilter(nameFilter);
+				
+				//描述中包含查询内容
 				SingleColumnValueFilter descriptionFilter = new SingleColumnValueFilter(Bytes.toBytes("p"), Bytes.toBytes("description"),
 						CompareOp.EQUAL, new SubstringComparator(q));
+				descriptionFilter.setFilterIfMissing(true);
+				
 				filterList.addFilter(descriptionFilter);
 
 				FilterList secondFilterList = new FilterList(FilterList.Operator.MUST_PASS_ALL, filterList);
@@ -299,11 +309,11 @@ public class ProductDao {
 	 * 在现有put的基础上设置product的各属性值
 	 */
 	private Put setPut(Put p, Product product) {
-		p.add(Bytes.toBytes("p"), Bytes.toBytes("name"), Bytes.toBytes(product.getName()));
-		p.add(Bytes.toBytes("p"), Bytes.toBytes("description"), Bytes.toBytes(product.getDescription()));
-		p.add(Bytes.toBytes("p"), Bytes.toBytes("shopId"), Bytes.toBytes(product.getShopId()));
-		p.add(Bytes.toBytes("p"), Bytes.toBytes("categoryId"), Bytes.toBytes(product.getCategoryId()));
-		p.add(Bytes.toBytes("p"), Bytes.toBytes("createTime"), Bytes.toBytes(new Date().getTime()));
+		p.addColumn(Bytes.toBytes("p"), Bytes.toBytes("name"), Bytes.toBytes(product.getName()));
+		p.addColumn(Bytes.toBytes("p"), Bytes.toBytes("description"), Bytes.toBytes(product.getDescription()));
+		p.addColumn(Bytes.toBytes("p"), Bytes.toBytes("shopId"), Bytes.toBytes(product.getShopId()));
+		p.addColumn(Bytes.toBytes("p"), Bytes.toBytes("categoryId"), Bytes.toBytes(product.getCategoryId()));
+		p.addColumn(Bytes.toBytes("p"), Bytes.toBytes("createTime"), Bytes.toBytes(new Date().getTime()));
 		return p;
 	}
 

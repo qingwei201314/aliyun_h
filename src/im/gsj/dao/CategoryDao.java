@@ -211,8 +211,8 @@ public class CategoryDao {
 	 * 在现有put的基础上设置product的各属性值
 	 */
 	private Put setPut(Put p, Category category) {
-		p.add(Bytes.toBytes("c"), Bytes.toBytes("name"), Bytes.toBytes(category.getName()));
-		p.add(Bytes.toBytes("c"), Bytes.toBytes("shopId"), Bytes.toBytes(category.getShopId()));
+		p.addColumn(Bytes.toBytes("c"), Bytes.toBytes("name"), Bytes.toBytes(category.getName()));
+		p.addColumn(Bytes.toBytes("c"), Bytes.toBytes("shopId"), Bytes.toBytes(category.getShopId()));
 		return p;
 	}
 	
