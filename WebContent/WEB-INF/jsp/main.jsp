@@ -1,7 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>凯文信息</title>
+    <meta charset="utf-8" />
     <link href="${util.path}/kevininfo/css/bootstrap.css" rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="${util.path}/js/jquery-1.8.3.min.js"></script>
     <!---- start-smoth-scrolling---->
