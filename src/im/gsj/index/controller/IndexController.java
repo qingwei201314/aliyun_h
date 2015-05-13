@@ -40,7 +40,9 @@ public class IndexController {
 
 	// 跳转到主页
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
-	public String main() {
+	public String main(ModelMap modelMap) {
+		Calendar calendar = Calendar.getInstance();
+		modelMap.addAttribute("year", calendar.get(Calendar.YEAR));
 		return "/main";
 	}
 

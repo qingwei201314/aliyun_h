@@ -40,7 +40,7 @@ public class AboutService {
 	
 	public About getByPhone(String phone) throws IOException{
 		Shop shop = shopDao.getByPhone(phone);
-		About about = aboutDao.query("shop_id", shop.getId());
+		About about = aboutDao.query("shopId", shop.getId());
 		return about;
 	}
 	
@@ -50,7 +50,7 @@ public class AboutService {
 	 */
 	public ModelMap aboutUs(String phone, ModelMap model) throws IOException{
 		Shop shop = shopDao.getByPhone(phone);
-		About about = aboutDao.query("shop_id", shop.getId());
+		About about = aboutDao.query("shopId", shop.getId());
 		model.addAttribute("about", about);
 		model = indexService.getHeadAndFooter(shop.getId(), model);
 		return model;
@@ -61,7 +61,7 @@ public class AboutService {
 	 */
 	public ModelMap aboutUsM(String phone, ModelMap model) throws IOException{
 		Shop shop = shopDao.getByPhone(phone);
-		About about = aboutDao.query("shop_id", shop.getId());
+		About about = aboutDao.query("shopId", shop.getId());
 		model.addAttribute("about", about);
 		model = indexService.getHeadAndFooterM(shop.getId(), model);
 		return model;
